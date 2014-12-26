@@ -40,7 +40,7 @@ $ wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein<b
 $ chmod 755 lein<br>
 
 Add ~/bin to your PATH (e.g. alter ~/profile) then test it:<br>
-$ ./lein<br>
+$ lein<br>
 
 
 
