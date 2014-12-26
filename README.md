@@ -1,10 +1,32 @@
 Setting up development environment
 ==================================
-- Install Oracle Java 8 on your machine
 
-- Install Oracle Java 8 on Pi machine
 
-- Install lein:
+Install software on development machine
+-------------------------------------
+- JDK 8 http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+- IntelliJ or any other IDE
+
+
+Install Oracle Java 8 on Pi machine
+-----------------------------------
+- JDK 8 for ARM http://www.oracle.com/technetwork/java/javase/downloads/jdk8-arm-downloads-2187472.html
+
+$ sudo tar zxvf ~/Downloads/jdk-8u6-linux-arm-vfp-hflt.tar.gz -C /opt
+
+$ sudo update-alternatives --install /usr/bin/javac javac /opt/jdk1.8.0_06/bin/javac 1
+$ sudo update-alternatives --install /usr/bin/java java /opt/jdk1.8.0_06/bin/java 1
+
+$ sudo update-alternatives --config javac
+$ sudo update-alternatives --config java
+
+Verify that version 8 is default:
+$ java -version
+$ javac -version
+
+
+Install lein
+------------
 
 $ mkdir -p ~/bin
 $ cd ~/bin
@@ -15,8 +37,8 @@ $ ./lein
 Then add ~/bin to your PATH (e.g. alter ~/profile)
 
 
-- Set password-less SSH
-
+Set password-less SSH
+---------------------
 On your machine (replace <PI-HOST> with actual IP):
 
 If you haven't done it yet:
@@ -37,7 +59,8 @@ $ lein pom
 Open IntelliJ and import Maven project from 'car/pom.xml'.
 
 
-- Override default variables with yours:
+Override default variables with yours
+-------------------------------------
 $ cd car
 $ touch .setvars.sh
 
@@ -48,19 +71,22 @@ PI_HOST=192.168.1.20
 Don't commit this file, it's for your machine only.
 
 
-- Building
+Building
+--------
 $ cd car
 $ ./uberjar.sh
 
 Pick result from 'target/car-0.1.0-SNAPSHOT-standalone.jar'.
 
 
-- Building and running on PI via SSH
+Building + running on PI via SSH
+----------------------------------
 $ cd car
 $ ./deploy.sh
 
 
-- Other stuff
+Other stuff
+-----------
 $ cd car
 $ ./remote_shutdown.sh
 $ ./remote_restart.sh
