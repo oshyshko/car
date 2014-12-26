@@ -10,6 +10,7 @@ Prepare development machine
 
 Prepare Pi machine
 ------------------
+- Install Raspbian, e.g. via NOOBS http://www.raspberrypi.org/help/noobs-setup/
 
 - Enable SSH with<br>
 $ sudo raspi-config
