@@ -2,15 +2,21 @@ Setting up development environment
 ==================================
 
 
-Install software on development machine
--------------------------------------
+Prepare development machine
+---------------------------
 - JDK 8 http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
 - IntelliJ or any other IDE
 
 
-Install Oracle Java 8 on Pi machine
------------------------------------
-- JDK 8 for ARM http://www.oracle.com/technetwork/java/javase/downloads/jdk8-arm-downloads-2187472.html
+Prepare Pi machine
+------------------
+Enable SSH with:
+$ sudo raspi-config
+
+Update everything:
+$ sudo rpi-update
+
+Download JDK 8 for ARM from http://www.oracle.com/technetwork/java/javase/downloads/jdk8-arm-downloads-2187472.html
 
 $ sudo tar zxvf ~/Downloads/jdk-8u6-linux-arm-vfp-hflt.tar.gz -C /opt
 
@@ -27,7 +33,6 @@ $ javac -version
 
 Install lein
 ------------
-
 $ mkdir -p ~/bin
 $ cd ~/bin
 $ wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
@@ -39,7 +44,7 @@ Then add ~/bin to your PATH (e.g. alter ~/profile)
 
 Set password-less SSH
 ---------------------
-On your machine (replace <PI-HOST> with actual IP):
+On development machine (replace <PI-HOST> with actual IP):
 
 If you haven't done it yet:
 $ ssh-keygen -t rsa
