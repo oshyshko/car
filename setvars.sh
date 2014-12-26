@@ -1,7 +1,20 @@
 #!/bin/sh
 
-USER=pi
-HOST=192.168.1.20
-FILE_NAME=car-0.1.0-SNAPSHOT-standalone.jar
-FILE_LOCAL=./target/$FILE_NAME
-FILE_REMOTE=/home/pi/deploy/$FILE_NAME
+set -xue
+
+# IMPORTANT! Don't edit this file!
+# Instead, create ".setvars.sh" and override vars there.
+
+PI_USER=pi
+PI_HOST=192.168.1.20
+
+JAR_NAME=car-0.1.0-SNAPSHOT-standalone.jar
+JAR=./target/$JAR_NAME
+PI_JAR_DIR=/home/pi/.car
+PI_JAR=$PI_JAR_DIR/$JAR_NAME
+
+LOCAL_VARS=.setvars.sh
+
+if [ -f $LOCAL_VARS ]; then
+  source $LOCAL_VARS
+fi
