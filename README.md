@@ -4,61 +4,62 @@ Setting up development environment
 
 Prepare development machine
 ---------------------------
-- JDK 8 http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
-- IntelliJ or any other IDE
+- Install JDK 8 http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+- Install IntelliJ or any other IDE
 
 
 Prepare Pi machine
 ------------------
-Enable SSH with:
+
+- Enable SSH with<br>
 $ sudo raspi-config
 
-Update everything:
+- Update everything<br>
 $ sudo rpi-update
 
-Download JDK 8 for ARM from http://www.oracle.com/technetwork/java/javase/downloads/jdk8-arm-downloads-2187472.html
-
-$ sudo tar zxvf ~/Downloads/jdk-8u6-linux-arm-vfp-hflt.tar.gz -C /opt
-
-$ sudo update-alternatives --install /usr/bin/javac javac /opt/jdk1.8.0_06/bin/javac 1
-$ sudo update-alternatives --install /usr/bin/java java /opt/jdk1.8.0_06/bin/java 1
-
-$ sudo update-alternatives --config javac
-$ sudo update-alternatives --config java
-
-Verify that version 8 is default:
-$ java -version
+- Download JDK 8 for ARM from http://www.oracle.com/technetwork/java/javase/downloads/jdk8-arm-downloads-2187472.html<br>
+$ sudo tar zxvf ~/Downloads/jdk-8u6-linux-arm-vfp-hflt.tar.gz -C /opt<br>
+<br>
+$ sudo update-alternatives --install /usr/bin/javac javac /opt/jdk1.8.0_06/bin/javac 1<br>
+$ sudo update-alternatives --install /usr/bin/java java /opt/jdk1.8.0_06/bin/java 1<br>
+<br>
+$ sudo update-alternatives --config javac<br>
+$ sudo update-alternatives --config java<br>
+<br>
+Verify that version 8 is default:<br>
+$ java -version<br>
 $ javac -version
 
 
 Install lein
 ------------
-$ mkdir -p ~/bin
-$ cd ~/bin
-$ wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
-$ chmod 755 lein
-$ ./lein
+$ mkdir -p ~/bin<br>
+$ cd ~/bin<br>
+$ wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein<br>
+$ chmod 755 lein<br>
 
-Then add ~/bin to your PATH (e.g. alter ~/profile)
+Add ~/bin to your PATH (e.g. alter ~/profile) then test it:<br>
+$ ./lein<br>
+
 
 
 Set password-less SSH
 ---------------------
 On development machine (replace <PI-HOST> with actual IP):
 
-If you haven't done it yet:
+If you haven't done it yet:<br>
 $ ssh-keygen -t rsa
 
-$ ssh pi@<PI-HOST> mkdir -p .ssh
-$ cat ~/.ssh/id_rsa.pub | ssh pi@<PI-HOST> 'cat >> .ssh/authorized_keys'
+$ ssh pi@<PI-HOST> mkdir -p .ssh$ ./lein<br>
+$ cat ~/.ssh/id_rsa.pub | ssh pi@<PI-HOST> 'cat >> .ssh/authorized_keys'<br>
 
-Test with:
-$ ssh pi@$<PI-HOST>
+Test with:<br>
+$ ssh pi@$<PI-HOST><br>
 Ctrl+D to leave
 
-- Clone this repo and setup IntelliJ 
-$ git clone https://github.com/oshyshko/car.git
-$ cd car
+Clone this repo and setup IntelliJ:<br>
+$ git clone https://github.com/oshyshko/car.git<br>
+$ cd car<br>
 $ lein pom
 
 Open IntelliJ and import Maven project from 'car/pom.xml'.
@@ -66,11 +67,11 @@ Open IntelliJ and import Maven project from 'car/pom.xml'.
 
 Override default variables with yours
 -------------------------------------
-$ cd car
+$ cd car<br>
 $ touch .setvars.sh
 
-Edit '.setvars.sh' to override with your values, e.g.:
-PI_USER=pi
+Edit '.setvars.sh' to override with your values, e.g.:<br>
+PI_USER=pi<br>
 PI_HOST=192.168.1.20
 
 Don't commit this file, it's for your machine only.
@@ -78,7 +79,7 @@ Don't commit this file, it's for your machine only.
 
 Building
 --------
-$ cd car
+$ cd car<br>
 $ ./uberjar.sh
 
 Pick result from 'target/car-0.1.0-SNAPSHOT-standalone.jar'.
@@ -86,12 +87,12 @@ Pick result from 'target/car-0.1.0-SNAPSHOT-standalone.jar'.
 
 Building + running on PI via SSH
 ----------------------------------
-$ cd car
+$ cd car<br>
 $ ./deploy.sh
 
 
 Other stuff
 -----------
-$ cd car
-$ ./remote_shutdown.sh
+$ cd car<br>
+$ ./remote_shutdown.sh<br>
 $ ./remote_restart.sh
