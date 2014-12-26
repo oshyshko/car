@@ -50,7 +50,7 @@ On development machine (replace <PI-HOST> with actual IP):
 If you haven't done it yet:<br>
 $ ssh-keygen -t rsa
 
-$ ssh pi@<PI-HOST> mkdir -p .ssh$ ./lein<br>
+$ ssh pi@<PI-HOST> mkdir -p .ssh<br>
 $ cat ~/.ssh/id_rsa.pub | ssh pi@<PI-HOST> 'cat >> .ssh/authorized_keys'<br>
 
 Test with:<br>
