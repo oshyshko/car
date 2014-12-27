@@ -5,4 +5,4 @@ set -xue
 source setvars.sh
 
 # run
-ssh $USER@$HOST "sudo shutdown -r now"
+ssh $PI_USER@$PI_HOST "sudo shutdown -r now"
