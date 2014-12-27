@@ -18,7 +18,7 @@ $ sudo raspi-config
 - Update everything<br>
 $ sudo rpi-update
 
-- Download JDK 8 for ARM from http://www.oracle.com/technetwork/java/javase/downloads/jdk8-arm-downloads-2187472.html<br>
+- Install JDK 8u6+ for ARM from http://www.oracle.com/technetwork/java/javase/downloads/jdk8-arm-downloads-2187472.html<br>
 $ sudo tar zxvf ~/Downloads/jdk-8u6-linux-arm-vfp-hflt.tar.gz -C /opt<br>
 <br>
 $ sudo update-alternatives --install /usr/bin/javac javac /opt/jdk1.8.0_06/bin/javac 1<br>
@@ -30,18 +30,6 @@ $ sudo update-alternatives --config java<br>
 Verify that version 8 is default:<br>
 $ java -version<br>
 $ javac -version
-
-
-Install lein
-------------
-$ mkdir -p ~/bin<br>
-$ cd ~/bin<br>
-$ wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein<br>
-$ chmod 755 lein<br>
-
-Add ~/bin to your PATH (e.g. alter ~/profile) then test it:<br>
-$ lein<br>
-
 
 
 Set password-less SSH
