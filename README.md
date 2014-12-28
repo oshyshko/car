@@ -72,7 +72,7 @@ $ ssh pi@PI_HOST mkdir -p .ssh<br>
 $ cat ~/.ssh/id_rsa.pub | ssh pi@PI_HOST 'cat >> .ssh/authorized_keys'<br>
 <br>
 Now you should be able to SSH into your Pi without typing password every time. Test it with:<br>
-$ ssh pi@$PI-HOST<br>
+$ ssh pi@$PI_HOST<br>
 Ctrl+D to leave
 
 
@@ -88,16 +88,8 @@ PI_HOST=192.168.1.21
 IMPORTANT: don't commit this file, it's for your local use only.
 
 
-Building locally
-----------------
-$ cd ~/work/car<br>
-$ ./uberjar.sh
-
-Pick the result from 'target/car-0.1.0-SNAPSHOT-standalone.jar'.
-
-
-Building locally + running remotely on PI
------------------------------------------
+Building locally, then running remotely on PI
+---------------------------------------------
 $ cd ~/work/car<br>
 $ ./deploy.sh
 <br>
@@ -106,5 +98,6 @@ $ ./deploy.sh
 Other stuff
 -----------
 $ cd ~/work/car<br>
+$ ./uberjar.sh                       
 $ ./remote_shutdown.sh<br>
 $ ./remote_restart.sh
