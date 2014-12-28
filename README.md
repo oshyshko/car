@@ -3,39 +3,26 @@ This page describes how to set development environment for the project.
 Prepare your Pi machine
 ==================
 - Install Raspbian, e.g. via NOOBS http://www.raspberrypi.org/help/noobs-setup/<br>
-In short:<br> download NOOBS LITE (its just 20MB).
+TL;DR: download NOOBS LITE (its just 20MB).
 Format your SD card.
-Unzip NOOBS LITE contents to SD card root.
+Unzip NOOBS LITE contents to SD root.
 Stick the SD into your Pi machine.
 Plug in ethernet cable.
-Boot the machine and pick "Raspbian".
-Then do the following:
+Boot the machine and pick "Raspbian" from menu.
+Wait when it's done and continue with the rest:
 <br>
-
-- Setup Wi-Fi<br>
-$ startx<br>
-Find Wi-Fi preferences and join your Wi-Fi network. Remember your IP.<br>
-OPTIONAL: set a DHCP lease on you Wi-Fi router for your Pi, so Pi's IP address won't change in future.
-
-- Update everything<br>
-$ sudo rpi-update
 
 - Enable SSH in "Advanced Options" via<br>
 $ sudo raspi-config<br>
 OPTIONAL: set "Overclocking" to "Medium" or even "Turbo" if you dare.
 
-- Enable password-less SSH access from your development machine<br>
-On development machine (replace PI_HOST with actual IP):
+- Setup Wi-Fi<br>
+$ startx<br>
+Run Wi-Fi preferences and join your Wi-Fi network. Remember your IP.<br>
+OPTIONAL: set a DHCP lease on you Wi-Fi router for your Pi, so the IP address won't change in future.
 
-If you haven't done it yet:<br>
-$ ssh-keygen -t rsa
-
-$ ssh pi@PI_HOST mkdir -p .ssh<br>
-$ cat ~/.ssh/id_rsa.pub | ssh pi@PI_HOST 'cat >> .ssh/authorized_keys'<br>
-
-Test with:<br>
-$ ssh pi@$<PI-HOST><br>
-Ctrl+D to leave
+- Update everything<br>
+$ sudo rpi-update
 
 - Install the latest JDK for ARM.<br>
 Open a browser on you Pi, and navigate to http://www.oracle.com/technetwork/java/javase/downloads/jdk8-arm-downloads-2187472.html<br>
@@ -78,6 +65,19 @@ $ lein pom
 
 Open IntelliJ and import Maven project from 'car/pom.xml'.
 
+- Enable password-less SSH access to your Pi machine<br>
+If you haven't generated your private/public SSH keys yet (e.g. for Github), do:<br>
+$ ssh-keygen -t rsa
+
+NOTE: replace PI_HOST with actual IP:
+
+$ ssh pi@PI_HOST mkdir -p .ssh<br>
+$ cat ~/.ssh/id_rsa.pub | ssh pi@PI_HOST 'cat >> .ssh/authorized_keys'<br>
+
+Now you should SSH into your Pi without passwords. Test it with:<br>
+$ ssh pi@$PI-HOST<br>
+Ctrl+D to leave
+
 
 Override default variables with your own
 ----------------------------------------
@@ -91,16 +91,16 @@ PI_HOST=192.168.1.21
 IMPORTANT: Don't commit this file, it's for your local use only.
 
 
-Building
---------
+Building locally
+----------------
 $ cd ~/work/car<br>
 $ ./uberjar.sh
 
-Pick result from 'target/car-0.1.0-SNAPSHOT-standalone.jar'.
+Pick the result from 'target/car-0.1.0-SNAPSHOT-standalone.jar'.
 
 
-Building + running on PI via SSH
-----------------------------------
+Building locally + running remotely on PI
+-----------------------------------------
 $ cd ~/work/car<br>
 $ ./deploy.sh
 
