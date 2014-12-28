@@ -30,9 +30,9 @@ OPTIONAL: set a DHCP lease on you Wi-Fi router for your Pi, so the IP address wo
 - Update everything<br>
 $ sudo rpi-update
 
-- Install the latest JDK for ARM.<br>
-Open a browser on you Pi, and navigate to http://www.oracle.com/technetwork/java/javase/downloads/jdk8-arm-downloads-2187472.html<br>
-Click "Accept" and download the TAR.GZ. Typically, it will be stored in "~/Downloads".<br> 
+- Install the latest JDK for ARM. Open a browser on you Pi, and navigate to
+http://www.oracle.com/technetwork/java/javase/downloads/jdk8-arm-downloads-2187472.html<br>
+Click "Accept" and download the TAR.GZ.<br> 
 <br>
 $ cd ~/Downloads
 $ sudo tar zxvf ~/Downloads/jdk-8u6-linux-arm-vfp-hflt.tar.gz -C /opt<br>
@@ -43,7 +43,7 @@ $ sudo update-alternatives --install /usr/bin/java java /opt/jdk1.8.0_06/bin/jav
 $ sudo update-alternatives --config javac<br>
 $ sudo update-alternatives --config java<br>
 <br>
-Verify that version 8 is default:<br>
+Verify that the newly installed version is active:<br>
 $ java -version<br>
 $ javac -version
 
@@ -94,7 +94,7 @@ Edit '.setvars.sh' to override with your values, e.g.:<br>
 PI_USER=pi<br>
 PI_HOST=192.168.1.21
 
-IMPORTANT: Don't commit this file, it's for your local use only.
+IMPORTANT: don't commit this file, it's for your local use only.
 
 
 Building locally
@@ -109,6 +109,7 @@ Building locally + running remotely on PI
 -----------------------------------------
 $ cd ~/work/car<br>
 $ ./deploy.sh
+<br>
 
 
 Other stuff
