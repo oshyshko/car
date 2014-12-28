@@ -6,7 +6,7 @@ set -xue
 # Instead, create ".setvars.sh" and override vars there.
 
 PI_USER=pi
-PI_HOST=192.168.1.20
+PI_HOST=
 
 JAR_NAME=car-0.1.0-SNAPSHOT-standalone.jar
 JAR=./target/$JAR_NAME
