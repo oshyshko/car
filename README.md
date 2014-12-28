@@ -66,11 +66,11 @@ $ mkdir ~/work<br>
 $ cd ~/work<br>
 $ git clone https://github.com/oshyshko/car.git<br>
 
-- Generate POM for IntelliJ
+- Generate POM for IntelliJ:<br>
 $ cd ~/work/car<br>
 $ lein pom<br>
-<br>
-- Open IntelliJ and import Maven project from 'car/pom.xml'.
+
+- Open IntelliJ and import Maven project from 'car/pom.xml'
 
 - Enable password-less SSH access to your Pi<br>
 If you haven't generated your private/public SSH keys yet (e.g. for Github), do:<br>
