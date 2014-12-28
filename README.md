@@ -53,12 +53,24 @@ Prepare your development machine
 - Install the latest JDK 8 http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
 - Install IntelliJ or any other IDE
 
+Install lein
+------------
+$ mkdir -p ~/bin<br>
+$ cd ~/bin<br>
+$ wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein<br>
+$ chmod 755 lein<br>
+
+Make sure that ~/bin is in your PATH (e.g. in ~/profile). Test it with:<br>
+$ lein<br>
+
 - Clone this repo and setup IntelliJ:<br>
 $ mkdir ~/work<br>
 $ cd ~/work<br>
 $ git clone https://github.com/oshyshko/car.git<br>
-$ cd car<br>
-$ lein pom
+
+- Generate POM for IntelliJ
+$ cd ~/work/car<br>
+$ lein pom<br>
 <br>
 Open IntelliJ and import Maven project from 'car/pom.xml'.
 
