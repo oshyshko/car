@@ -53,15 +53,6 @@ Prepare your development machine
 - Install the latest JDK 8 http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
 - Install IntelliJ or any other IDE
 
-- Install Lein:<br>
-$ mkdir -p ~/bin<br>
-$ cd ~/bin<br>
-$ wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein<br>
-$ chmod 755 lein<br>
-<br>
-Add ~/bin to your PATH (e.g. alter ~/.profile) then test that Lein works with:<br>
-$ lein<br>
-
 - Clone this repo and setup IntelliJ:<br>
 $ mkdir ~/work<br>
 $ cd ~/work<br>

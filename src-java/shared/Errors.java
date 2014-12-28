@@ -1,4 +1,4 @@
-package util;
+package shared;
 
 public class Errors {
     public static RuntimeException die(Throwable t) {
