@@ -53,12 +53,12 @@ Prepare your development machine
 - Install the latest JDK 8 http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
 - Install IntelliJ or any other IDE
 
-- Install Lein
+- Install Lein:<br>
 $ mkdir -p ~/bin<br>
 $ cd ~/bin<br>
 $ wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein<br>
 $ chmod 755 lein<br>
-
+<br>
 Add ~/bin to your PATH (e.g. alter ~/.profile) then test that Lein works with:<br>
 $ lein<br>
 
@@ -68,18 +68,18 @@ $ cd ~/work<br>
 $ git clone https://github.com/oshyshko/car.git<br>
 $ cd car<br>
 $ lein pom
-
+<br>
 Open IntelliJ and import Maven project from 'car/pom.xml'.
 
 - Enable password-less SSH access to your Pi<br>
 If you haven't generated your private/public SSH keys yet (e.g. for Github), do:<br>
 $ ssh-keygen -t rsa<br>
-
+<br>
 NOTE: replace PI_HOST with the actual IP:
-
+<br>
 $ ssh pi@PI_HOST mkdir -p .ssh<br>
 $ cat ~/.ssh/id_rsa.pub | ssh pi@PI_HOST 'cat >> .ssh/authorized_keys'<br>
-
+<br>
 Now you should be able to SSH into your Pi without typing password every time. Test it with:<br>
 $ ssh pi@$PI-HOST<br>
 Ctrl+D to leave
