@@ -9,12 +9,10 @@ Prerequisites
 Prepare your Pi
 ===============
 - Install Raspbian, e.g. via NOOBS http://www.raspberrypi.org/help/noobs-setup/<br>
-TL;DR: download NOOBS LITE (its just 20MB).
-Format your SD card.
-Unzip NOOBS LITE contents to SD root.
-Stick the SD into your Pi.
-Plug in ethernet cable.
-Boot the machine and pick "Raspbian" from menu.
+TL;DR: download NOOBS LITE at (it's just 20MB): http://downloads.raspberrypi.org/NOOBS_lite_latest
+Format your SD card (should be at least 4GB).
+Unzip NOOBS LITE contents to SD card root, eject it, then stick into your Pi.
+Plug in ethernet cable. Boot the machine and pick "Raspbian" from menu.
 Wait when it's done and continue with the rest:
 <br>
 
