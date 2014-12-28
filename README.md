@@ -86,13 +86,12 @@ $ ssh pi@$PI_HOST<br>
 Ctrl+D to leave
 
 
-Override default variables with your own
-----------------------------------------
+Override default PI_HOST and other variables
+--------------------------------------------
 $ cd ~/work/car<br>
 $ touch .setvars.sh
 
 Edit '.setvars.sh' to override with your values, e.g.:<br>
-PI_USER=pi<br>
 PI_HOST=192.168.1.21
 
 IMPORTANT: don't commit this file, it's for your local use only.
