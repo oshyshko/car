@@ -1,12 +1,18 @@
-This page describes how to set development environment for the project.
+This page describes how to set up development environment for the project.
 
-Prepare your Pi machine
-==================
+Prerequisites
+=============
+- a Raspberry Pi with Wi-Fi (or at least Ethernet)
+- an OS X or Linux development machine (Windows with pre-installed Cygwin or MinGW should work too)
+
+
+Prepare your Pi
+===============
 - Install Raspbian, e.g. via NOOBS http://www.raspberrypi.org/help/noobs-setup/<br>
 TL;DR: download NOOBS LITE (its just 20MB).
 Format your SD card.
 Unzip NOOBS LITE contents to SD root.
-Stick the SD into your Pi machine.
+Stick the SD into your Pi.
 Plug in ethernet cable.
 Boot the machine and pick "Raspbian" from menu.
 Wait when it's done and continue with the rest:
@@ -65,7 +71,7 @@ $ lein pom
 
 Open IntelliJ and import Maven project from 'car/pom.xml'.
 
-- Enable password-less SSH access to your Pi machine<br>
+- Enable password-less SSH access to your Pi<br>
 If you haven't generated your private/public SSH keys yet (e.g. for Github), do:<br>
 $ ssh-keygen -t rsa<br>
 
