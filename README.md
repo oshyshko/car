@@ -24,8 +24,8 @@ OPTIONAL: set "Overclocking" to "Medium" or even "Turbo" if you dare.
 
 - Setup Wi-Fi<br>
 $ startx<br>
-Run Wi-Fi preferences and join your Wi-Fi network. Remember your IP.<br>
-OPTIONAL: set a DHCP lease on you Wi-Fi router for your Pi, so the IP address won't change in future.
+Run Wi-Fi preferences and join your Wi-Fi network. Remember your IP (use $ ifconfig).<br>
+OPTIONAL: give your Pi a static IP (by it's MAC addr) via Wi-Fi router admin panel, so the IP address won't change in future.
 
 - Update everything<br>
 $ sudo rpi-update
