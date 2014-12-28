@@ -67,14 +67,14 @@ Open IntelliJ and import Maven project from 'car/pom.xml'.
 
 - Enable password-less SSH access to your Pi machine<br>
 If you haven't generated your private/public SSH keys yet (e.g. for Github), do:<br>
-$ ssh-keygen -t rsa
+$ ssh-keygen -t rsa<br>
 
-NOTE: replace PI_HOST with actual IP:
+NOTE: replace PI_HOST with the actual IP:
 
 $ ssh pi@PI_HOST mkdir -p .ssh<br>
 $ cat ~/.ssh/id_rsa.pub | ssh pi@PI_HOST 'cat >> .ssh/authorized_keys'<br>
 
-Now you should SSH into your Pi without passwords. Test it with:<br>
+Now you should be able to SSH into your Pi without typing password every time. Test it with:<br>
 $ ssh pi@$PI-HOST<br>
 Ctrl+D to leave
 
