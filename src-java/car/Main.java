@@ -1,45 +1,57 @@
 package car;
 
-import shared.Network;
+import shared.Net;
 import shared.Udp;
 
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.util.Iterator;
+import java.util.Map;
 
 import static shared.IO.println;
 
 public class Main {
+
+    public static final String BROADCAST_IP = "192.168.88.255"; // TODO get via API
+
     public static void main(String[] args) throws IOException {
-        Udp.DEBUG = true;
+        Udp.DEBUG = false;
 
         // TODO kill self on ssh drop?
-        // TODO broadcast own IP (every 2 seconds) + maintain a list of cars on controller
 
-        Network car = new Network();
+        Net net = new Net("car", BROADCAST_IP);
 
         // command line interface
         byte id = 0;
         println("Started. Type 'q' or 'quit' to quit.");
+        println("Available commands: (q)uit, (s)elf, (p)eers");
+        println();
         for (String line : lines(System.in)) {
             switch (line) {
                 case "quit":
                 case "q":
-                    System.out.println("Quiting.");
-                    car.close();
+                    println("Quiting.");
+                    net.close();
                     return;
 
                 case "self":
                 case "s":
-                    car.controller_update(new InetSocketAddress("127.0.0.1", Network.PORT), id++, (byte) 0, (byte) 0);
+                    net.controller_update(new InetSocketAddress("127.0.0.1", Net.PORT), id++, (byte) 0, (byte) 0);
+                    break;
+
+                case "peers":
+                case "p":
+                    for (Map.Entry<InetSocketAddress, String> kv : net.peer2name().entrySet())
+                        println(kv.getKey() + " -- '" + kv.getValue() + "'");
                     break;
 
                 default:
-                    println(line);
+                    println("Unknown command: " + line);
                     break;
             }
         }
     }
+
     public static Iterable<String> lines(final InputStream is) {
         return new Iterable<String>() {
             public Iterator<String> iterator() {
