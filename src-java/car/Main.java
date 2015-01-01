@@ -4,6 +4,7 @@ import shared.Network;
 import shared.Udp;
 
 import java.io.*;
+import java.net.InetSocketAddress;
 import java.util.Iterator;
 
 import static shared.IO.println;
@@ -13,19 +14,29 @@ public class Main {
         Udp.DEBUG = true;
 
         // TODO kill self on ssh drop?
-        // TODO broadcast own IP (evey 2 seconds) + maintain a list of cars on controller
+        // TODO broadcast own IP (every 2 seconds) + maintain a list of cars on controller
 
-        Closeable network = Network.Car.start();
+        Network car = new Network();
 
         // command line interface
+        byte id = 0;
         println("Started. Type 'q' or 'quit' to quit.");
         for (String line : lines(System.in)) {
-            if ("quit".equals(line) || "q".equals(line)) {
-                System.out.println("Quiting.");
-                network.close();
-                return;
-            } else {
-                println(line);
+            switch (line) {
+                case "quit":
+                case "q":
+                    System.out.println("Quiting.");
+                    car.close();
+                    return;
+
+                case "self":
+                case "s":
+                    car.controller_update(new InetSocketAddress("127.0.0.1", Network.PORT), id++, (byte) 0, (byte) 0);
+                    break;
+
+                default:
+                    println(line);
+                    break;
             }
         }
     }
