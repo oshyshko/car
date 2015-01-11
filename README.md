@@ -116,7 +116,8 @@ $ sudo apt-get install hostapd udhcpd<br>
 $ sudo cp /etc/default/hostapd etc/default/hostapd.orig<br>
 $ sudo pico /etc/default/hostapd<br>
 
-    DAEMON_CONF="/etc/hostapd/hostapd.conf"<br>
+    DAEMON_CONF="/etc/hostapd/hostapd.conf"
+    
 $ sudo cp /etc/hostapd/hostapd.conf /etc/hostapd/hostapd.conf.orig<br>
 $ sudo pico /etc/hostapd/hostapd.conf<br>
 
@@ -150,7 +151,6 @@ $ sudo pico /etc/network/interfaces<br>
        netmask 255.255.255.0
 $ sudo cp /etc/udhcpd.conf /etc/udhcpd.conf.orig<br>
 $ sudo pico /etc/udhcpd.conf<br> 
-<br>
 
     [diff /etc/udhcpd.conf /etc/udhcpd.conf.orig]
     5,6c5,6
@@ -188,4 +188,3 @@ $ sudo service udhcpd start<br>
 <br>
 $ sudo update-rc.d hostapd enable<br>
 $ sudo update-rc.d udhcpd enable<br>
-<br>
