@@ -115,81 +115,74 @@ $ sudo apt-get install hostapd udhcpd<br>
 <br>
 $ sudo cp /etc/default/hostapd etc/default/hostapd.orig<br>
 $ sudo pico /etc/default/hostapd<br>
-<br>
-DAEMON_CONF="/etc/hostapd/hostapd.conf"<br>
-<br>
-<br>
+
+    DAEMON_CONF="/etc/hostapd/hostapd.conf"<br>
 $ sudo cp /etc/hostapd/hostapd.conf /etc/hostapd/hostapd.conf.orig<br>
 $ sudo pico /etc/hostapd/hostapd.conf<br>
-<br>
-interface=wlan0<br>
-driver=nl80211<br>
-country_code=UK<br>
-ssid=little-box<br>
-hw_mode=g<br>
-channel=1<br>
-<br>
-wpa=2<br>
-wpa_passphrase=<password-at-least-8-chars><br>
-wpa_key_mgmt=WPA-PSK<br>
-wpa_pairwise=TKIP<br>
-rsn_pairwise=CCMP<br>
-<br>
-ieee80211n=1<br>
-wmm_enabled=1<br>
-<br>
-<br>
+
+    interface=wlan0
+    driver=nl80211
+    country_code=UK
+    ssid=little-box
+    hw_mode=g
+    channel=1
+    
+    wpa=2
+    wpa_passphrase=<password-at-least-8-chars><br>
+    wpa_key_mgmt=WPA-PSK
+    wpa_pairwise=TKIP
+    rsn_pairwise=CCMP
+    
+    ieee80211n=1
+    wmm_enabled=1
 $ sudo cp /etc/network/interfaces /etc/network/interfaces.orig<br>
 $ sudo pico /etc/network/interfaces<br>
-<br>
-auto lo<br>
-<br>
-iface lo inet loopback<br>
-<br>
-allow-hotplug eth0<br>
-iface eth0 inet dhcp<br>
-<br>
-iface wlan0 inet static<br>
-   address 192.168.21.21<br>
-   netmask 255.255.255.0<br>
-<br>
-<br>
+
+    auto lo
+    
+    iface lo inet loopback
+    
+    allow-hotplug eth0
+    iface eth0 inet dhcp
+    
+    iface wlan0 inet static
+       address 192.168.21.21
+       netmask 255.255.255.0
 $ sudo cp /etc/udhcpd.conf /etc/udhcpd.conf.orig<br>
 $ sudo pico /etc/udhcpd.conf<br> 
 <br>
-[diff /etc/udhcpd.conf /etc/udhcpd.conf.orig]<br> 
-5,6c5,6<br>
-< start		192.168.21.22	#default: 192.168.0.20<br>
-< end		192.168.21.122	#default: 192.168.0.254<br>
----<br>
-> start		192.168.0.20	#default: 192.168.0.20<br>
-> end		192.168.0.254	#default: 192.168.0.254<br>
-11c11<br>
-< interface	wlan0		#default: eth0<br>
----<br>
-> interface	eth0		#default: eth0<br>
-26c26<br>
-< remaining	yes		#default: yes<br>
----<br>
-> #remaining	yes		#default: yes<br>
-86c86<br>
-< opt	dns	8.8.8.8<br>
----<br>
-> opt	dns	192.168.10.2 192.168.10.10<br>
-88c88,91<br>
-< opt	router	192.168.21.1<br>
----<br>
-> opt	router	192.168.10.2<br>
-> opt	wins	192.168.10.10<br>
-> option	dns	129.219.13.81	# appened to above DNS servers for a total of 3<br>
-> option	domain	local<br>
-<br>
-<br>
+
+    [diff /etc/udhcpd.conf /etc/udhcpd.conf.orig]
+    5,6c5,6
+    < start		192.168.21.22	#default: 192.168.0.20
+    < end		192.168.21.122	#default: 192.168.0.254
+    ---
+    > start		192.168.0.20	#default: 192.168.0.20
+    > end		192.168.0.254	#default: 192.168.0.254
+    11c11
+    < interface	wlan0		#default: eth0
+    ---
+    > interface	eth0		#default: eth0
+    26c26
+    < remaining	yes		#default: yes
+    ---
+    > #remaining	yes		#default: yes
+    86c86
+    < opt	dns	8.8.8.8
+    ---
+    > opt	dns	192.168.10.2 192.168.10.10
+    88c88,91
+    < opt	router	192.168.21.1
+    ---
+    > opt	router	192.168.10.2
+    > opt	wins	192.168.10.10
+    > option	dns	129.219.13.81	# appened to above DNS servers for a total of 3
+    > option	domain	local
+
 $ sudo /etc/default/udhcpd<br>
-<br>
-#DHCPD_ENABLED="no"<br>
-<br>
-<br>
+
+    #DHCPD_ENABLED="no"
+
 $ sudo service hostapd start<br>
 $ sudo service udhcpd start<br>
 <br>
