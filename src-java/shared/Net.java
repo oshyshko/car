@@ -51,7 +51,7 @@ public class Net implements Closeable {
                     .expireAfterWrite(10, TimeUnit.SECONDS)
                     .build();
 
-    private volatile InetAddress peer;
+    private volatile InetAddress pair;
 //    private volatile long startedPairing;
 //    private volatile OnPair onPair;
 
@@ -59,7 +59,7 @@ public class Net implements Closeable {
         this.self = self;
         this.broadcast = broadcast;
 
-        this.peer = InetAddress.getByName("192.168.21.21"); // TODO implement pairing
+        this.pair = InetAddress.getByName("192.168.21.21"); // TODO implement pairing
 
         udp = new Udp(PORT) {
             protected void onReceive(InetSocketAddress fromSocket, byte[] bytes) {
@@ -145,7 +145,6 @@ public class Net implements Closeable {
         };
 
         // shouter
-        try {
             Threads.fork(new Runnable() {
                 public void run() {
                     byte[] shoutBytes = new byte[]{SHOUT, kind};
@@ -157,11 +156,7 @@ public class Net implements Closeable {
                     }
                 }
             });
-        } catch (Throwable t) {
-            udp.close();
-            throw Errors.die(t);
         }
-    }
 
     public void close() throws IOException {
         udp.close();
@@ -223,13 +218,13 @@ public class Net implements Closeable {
         return res;
     }
 
-    public InetAddress getPeer() {
-        return peer;
+    public InetAddress getPair() {
+        return pair;
     }
 
     public synchronized void controller_pair(final OnPair onPair) {
         // TODO implement
-//        this.peer = null;
+//        this.pair = null;
 //        this.onPair = onPair;
 //        this.startedPairing = System.currentTimeMillis();
 //
