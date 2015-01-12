@@ -13,8 +13,8 @@ scp -q $JAR $PI_USER@$PI_HOST:$PI_JAR
 
 # kill previous Java, if there is any
 set +e
-ssh $PI_USER@$PI_HOST "killall java"
+ssh $PI_USER@$PI_HOST "sudo killall java"
 set -e
 
 # run
-ssh $PI_USER@$PI_HOST "java -jar $PI_JAR"
+ssh $PI_USER@$PI_HOST "sudo java -jar $PI_JAR"

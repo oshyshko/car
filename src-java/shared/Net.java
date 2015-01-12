@@ -2,6 +2,7 @@ package shared;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.google.common.primitives.Longs;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -18,6 +19,7 @@ public class Net implements Closeable {
     public static final int PORT = 46352;
 
     public static final int MS_BETWEEN_SHOUTS = 1000;
+    public static final int MS_BETWEEN_UPDATES = 100;
 
     // kinds (used in shouting)
     public static final byte KIND_CAR = 1;
@@ -25,9 +27,11 @@ public class Net implements Closeable {
 
 
     // function ids
-    public static final int SHOUT = 0;
-    public static final int CAR_UPDATE = 2;
-    public static final int CONTROLLER_UPDATE_CONFIRM = 1;
+    public static final int SHOUT               = 1; // [type, kindMask] every 1000ms
+    public static final int CAR_UPDATE          = 2; // [type, id, steering, speed] every 100ms
+    public static final int CON_UPDATE_CONFIRM  = 3; // [type, id]
+    public static final int CON_PAIR_SHOUT      = 4; // [type, msAgo:long] x5 times, with 1000ms interval
+    public static final int CAR_PAIR_CONFIRMED  = 5; // [type]
 
     private final InetAddress self;
     private final InetAddress broadcast;
@@ -47,9 +51,15 @@ public class Net implements Closeable {
                     .expireAfterWrite(10, TimeUnit.SECONDS)
                     .build();
 
+    private volatile InetAddress peer;
+//    private volatile long startedPairing;
+//    private volatile OnPair onPair;
+
     public Net(final byte kind, final InetAddress self, InetAddress broadcast) throws IOException {
         this.self = self;
         this.broadcast = broadcast;
+
+        this.peer = InetAddress.getByName("192.168.21.21"); // TODO implement pairing
 
         udp = new Udp(PORT) {
             protected void onReceive(InetSocketAddress fromSocket, byte[] bytes) {
@@ -84,7 +94,7 @@ public class Net implements Closeable {
                             }
                             break;
 
-                        case CONTROLLER_UPDATE_CONFIRM:
+                        case CON_UPDATE_CONFIRM:
                             if (bytes.length != 2) {
                                 println("! Got invalid packet: " + Udp.toString(bytes));
                             } else {
@@ -109,6 +119,20 @@ public class Net implements Closeable {
                             }
                             break;
 
+//                        case CON_PAIR_SHOUT:
+//                            if (bytes.length != 9) {
+//                                println("! Got invalid packet: " + Udp.toString(bytes));
+//                            } else {
+//                                byte[] peeringStartedBytes = new byte[8];
+//                                System.arraycopy(bytes, 1, peeringStartedBytes, 0, peeringStartedBytes.length);
+//
+//                                long peeringStarted = Longs.fromByteArray(peeringStartedBytes);
+//
+//                                // TODO car_onPairShout(from, peeringStarted);
+//                            }
+//                            break;
+//
+//
                         default:
                             println("! Got unknown packet: " + Udp.toString(bytes));
 
@@ -122,9 +146,9 @@ public class Net implements Closeable {
 
         // shouter
         try {
-            new Thread() {
+            Threads.fork(new Runnable() {
                 public void run() {
-                    byte[] shoutBytes = new byte[] {SHOUT, kind};
+                    byte[] shoutBytes = new byte[]{SHOUT, kind};
 
                     Sleeper s = new Sleeper();
                     while (udp.isRunning()) {
@@ -132,7 +156,7 @@ public class Net implements Closeable {
                         s.sleep(MS_BETWEEN_SHOUTS);
                     }
                 }
-            }.start();
+            });
         } catch (Throwable t) {
             udp.close();
             throw Errors.die(t);
@@ -179,12 +203,12 @@ public class Net implements Closeable {
 
     // Sending -- used by car
     public void car_updateReceived(InetAddress to, byte id) {
-        udp.send(withPort(to), new byte[]{CONTROLLER_UPDATE_CONFIRM, id});
+        udp.send(withPort(to), new byte[]{CON_UPDATE_CONFIRM, id});
     }
 
     // Sending -- used by car + controller
     private void all_shout(byte[] shoutBytes) {
-        udp.send(withPort(broadcast), shoutBytes, true);
+        udp.send(withPort(broadcast), shoutBytes);
     }
 
     private InetSocketAddress withPort(InetAddress a) {
@@ -197,6 +221,42 @@ public class Net implements Closeable {
             if ((kv.getValue() & kindMask) > 0)
                 res.add(kv.getKey());
         return res;
+    }
+
+    public InetAddress getPeer() {
+        return peer;
+    }
+
+    public synchronized void controller_pair(final OnPair onPair) {
+        // TODO implement
+//        this.peer = null;
+//        this.onPair = onPair;
+//        this.startedPairing = System.currentTimeMillis();
+//
+//        Threads.fork(new Runnable() {
+//            public void run() {
+//
+//                try {
+//                    for (int i = 0; i < 5; i++) {
+//                        byte[] bytes = Longs.toByteArray(System.currentTimeMillis() - startedPairing);
+//                        byte[] packet = new byte[bytes.length+1];
+//                        packet[0] = CON_PAIR_SHOUT;
+//                        System.arraycopy(bytes, 0, packet, 1, bytes.length);
+//
+//                        udp.send(withPort(broadcast), packet);
+//                    }
+//                } finally {
+//                    Net.this.onPair = null;
+//                    Net.this.startedPairing = 0;
+//                    if (peer == null)
+//                        onPair.onPair(null);
+//                }
+//            }
+//        });
+    }
+
+    public static interface OnPair {
+        void onPair(InetAddress peerOrNull);
     }
 
 

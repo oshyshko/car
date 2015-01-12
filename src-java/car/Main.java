@@ -25,66 +25,76 @@ public class Main {
         println("My addresses + broadcasts are: " + addresses2broadcasts);
         println();
 
-        if (addresses2broadcasts.size() != 1)
-            Errors.die("addresses2broadcasts expected to have exactly one pair, buts was: " +
-                    addresses2broadcasts.size() + " (TODO implement selection)");
+        InetAddress self = null;
+        InetAddress broadcast = null;
 
-        InetAddress self      = addresses2broadcasts.keySet().iterator().next();
-        InetAddress broadcast = addresses2broadcasts.values().iterator().next();
-
-        Net net = new Net(Net.KIND_CAR, self, broadcast) {
-            protected void all_onShout(InetAddress from) {
-                // do nothing
+        for (Map.Entry<InetAddress, InetAddress> kv : addresses2broadcasts.entrySet()) {
+            if (kv.getKey().equals(InetAddress.getByName("192.168.21.21"))) {
+                self = kv.getKey();
+                broadcast = kv.getValue();
             }
+        }
 
-            protected void car_onUpdate(InetAddress from, byte id, byte steering, byte speed) {
-                car_updateReceived(from, id);
-            }
+        if (self == null)
+            Errors.die("Can't find preset 192.168.21.21 among " + addresses2broadcasts + " (TODO implement selection)");
 
-            protected void controller_onUpdateConfirm(InetAddress from, byte id, long ping) {
-                println("~ " + ping);
-            }
-        };
 
-        // command line interface
-        byte id = 1;
+        try (Driver d = new Driver()) {
+            Net net = new Net(Net.KIND_CAR, self, broadcast) {
+                protected void all_onShout(InetAddress from) {
+                    // do nothing
+                }
 
-        println("Available commands: (q)uit");
-        println("                    (s)elf update");
-        println("                    (p)eers list");
-        println("                    (d)ebug on/off");
-        println();
+                protected void car_onUpdate(InetAddress from, byte id, byte steering, byte speed) {
+                    d.update(steering, speed);
+                    car_updateReceived(from, id);
+                }
 
-        for (String line : lines(System.in)) {
-            switch (line) {
-                case "quit":
-                case "q":
-                    println("Quiting.");
-                    net.close();
-                    return;
+                protected void controller_onUpdateConfirm(InetAddress from, byte id, long ping) {
+                    println("~ " + ping);
+                }
+            };
 
-                case "self":
-                case "s":
-                    net.controller_update(self, id++, (byte) 0, (byte) 0);
-                    break;
+            // command line interface
+            byte id = 1;
 
-                case "peers":
-                case "p":
-                    for (Map.Entry<InetAddress, Byte> kv : net.peer2kind().entrySet())
-                        println(kv.getKey() + " -- of kind " + kv.getValue() +
-                                (net.isSelf(kv.getKey()) ? " (self)" : ""));
-                    break;
+            println("Available commands: (q)uit");
+            println("                    (s)elf update");
+            println("                    (p)eers list");
+            println("                    (d)ebug on/off");
+            println();
 
-                case "debug":
-                case "d":
-                    println("Debugging is now " + (Udp.DEBUG ? "OFF" : "ON"));
+            for (String line : lines(System.in)) {
+                switch (line) {
+                    case "quit":
+                    case "q":
+                        println("Quiting.");
+                        net.close();
+                        return;
 
-                    Udp.DEBUG = !Udp.DEBUG;
-                    break;
+                    case "self":
+                    case "s":
+                        net.controller_update(self, id++, (byte) 0, (byte) 0);
+                        break;
 
-                default:
-                    println("Unknown command: " + line);
-                    break;
+                    case "peers":
+                    case "p":
+                        for (Map.Entry<InetAddress, Byte> kv : net.peer2kind().entrySet())
+                            println(kv.getKey() + " -- of kind " + kv.getValue() +
+                                    (net.isSelf(kv.getKey()) ? " (self)" : ""));
+                        break;
+
+                    case "debug":
+                    case "d":
+                        println("Debugging is now " + (Udp.DEBUG ? "OFF" : "ON"));
+
+                        Udp.DEBUG = !Udp.DEBUG;
+                        break;
+
+                    default:
+                        println("Unknown command: " + line);
+                        break;
+                }
             }
         }
     }
