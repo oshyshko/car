@@ -29,14 +29,14 @@ public class Main {
         InetAddress broadcast = null;
 
         for (Map.Entry<InetAddress, InetAddress> kv : addresses2broadcasts.entrySet()) {
-            if (kv.getKey().equals(InetAddress.getByName("192.168.21.21"))) {
+            //if (kv.getKey().equals(InetAddress.getByName("192.168.2.1"))) {
                 self = kv.getKey();
                 broadcast = kv.getValue();
-            }
+            //}
         }
 
         if (self == null)
-            Errors.die("Can't find preset 192.168.21.21 among " + addresses2broadcasts + " (TODO implement selection)");
+            Errors.die("Can't find preset 192.168.2.1 among " + addresses2broadcasts + " (TODO implement selection)");
 
 
         try (Driver d = new Driver()) {
