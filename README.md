@@ -170,8 +170,11 @@ $ sudo service dnsmasq start<br>
 $ sudo update-rc.d hostapd enable<br>
 $ sudo update-rc.d dnsmasq enable<br>
 <br>
-$ sudo sysctl -w net.ipv4.ip_forward=1
 $ sudo pico /etc/rc.local
 
+    ...
+    
+    sudo sysctl -w net.ipv4.ip_forward=1
     iptables -t nat -A POSTROUTING -j MASQUERADE
     
+    exit 0
