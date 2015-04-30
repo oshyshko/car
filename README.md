@@ -74,23 +74,23 @@ $ lein pom<br>
 If you haven't generated your private/public SSH keys yet (e.g. for Github), do:<br>
 $ ssh-keygen -t rsa<br>
 <br>
-NOTE: replace PI_HOST with the actual IP:
+NOTE: replace CAR_HOST with the actual IP:
 <br>
-$ ssh pi@PI_HOST mkdir -p .ssh<br>
-$ cat ~/.ssh/id_rsa.pub | ssh pi@PI_HOST 'cat >> .ssh/authorized_keys'<br>
+$ ssh pi@CAR_HOST mkdir -p .ssh<br>
+$ cat ~/.ssh/id_rsa.pub | ssh pi@CAR_HOST 'cat >> .ssh/authorized_keys'<br>
 <br>
 Now you should be able to SSH into your Pi without typing password every time. Test it with:<br>
-$ ssh pi@$PI_HOST<br>
+$ ssh pi@$CAR_HOST<br>
 Ctrl+D to leave
 
 
-Override default PI_HOST and other variables
+Override default CAR_HOST and other variables
 --------------------------------------------
 $ cd ~/work/car<br>
 $ touch .setvars.sh
 
 Edit '.setvars.sh' to override with your values, e.g.:<br>
-PI_HOST=192.168.1.21
+CAR_HOST=192.168.1.21
 
 IMPORTANT: don't commit this file, it's for your local use only.
 
@@ -111,9 +111,23 @@ $ ./remote_restart.sh
 
 Setting up private AP on PI
 ---------------------------
-$ sudo apt-get install hostapd udhcpd<br>
+$ sudo apt-get install hostapd dnsmasq<br>
 <br>
-$ sudo cp /etc/default/hostapd etc/default/hostapd.orig<br>
+$ sudo cp /etc/network/interfaces /etc/network/interfaces.orig<br>
+$ sudo pico /etc/network/interfaces<br>
+
+    auto lo
+    
+    iface lo inet loopback
+    
+    allow-hotplug eth0
+    iface eth0 inet dhcp
+    
+    iface wlan0 inet static
+       address 192.168.2.1
+       netmask 255.255.255.0
+
+$ sudo cp /etc/default/hostapd /etc/default/hostapd.orig<br>
 $ sudo pico /etc/default/hostapd<br>
 
     DAEMON_CONF="/etc/hostapd/hostapd.conf"
@@ -129,62 +143,35 @@ $ sudo pico /etc/hostapd/hostapd.conf<br>
     channel=1
     
     wpa=2
-    wpa_passphrase=<password-at-least-8-chars><br>
+    wpa_passphrase=<password-at-least-8-chars>
     wpa_key_mgmt=WPA-PSK
     wpa_pairwise=TKIP
     rsn_pairwise=CCMP
     
     ieee80211n=1
     wmm_enabled=1
-$ sudo cp /etc/network/interfaces /etc/network/interfaces.orig<br>
-$ sudo pico /etc/network/interfaces<br>
 
-    auto lo
-    
-    iface lo inet loopback
-    
-    allow-hotplug eth0
-    iface eth0 inet dhcp
-    
-    iface wlan0 inet static
-       address 192.168.21.21
-       netmask 255.255.255.0
-$ sudo cp /etc/udhcpd.conf /etc/udhcpd.conf.orig<br>
-$ sudo pico /etc/udhcpd.conf<br> 
+Test it with (press ^C to stop):<br>
+$ sudo hostapd -d /etc/hostapd/hostapd.conf<br>
+<br>
+$ sudo cp /etc/dnsmasq.conf /etc/dnsmasq.orig<br>
+$ sudo pico /etc/dnsmasq.conf<br> 
 
-    [diff /etc/udhcpd.conf /etc/udhcpd.conf.orig]
-    5,6c5,6
-    < start		192.168.21.22	#default: 192.168.0.20
-    < end		192.168.21.122	#default: 192.168.0.254
-    ---
-    > start		192.168.0.20	#default: 192.168.0.20
-    > end		192.168.0.254	#default: 192.168.0.254
-    11c11
-    < interface	wlan0		#default: eth0
-    ---
-    > interface	eth0		#default: eth0
-    26c26
-    < remaining	yes		#default: yes
-    ---
-    > #remaining	yes		#default: yes
-    86c86
-    < opt	dns	8.8.8.8
-    ---
-    > opt	dns	192.168.10.2 192.168.10.10
-    88c88,91
-    < opt	router	192.168.21.1
-    ---
-    > opt	router	192.168.10.2
-    > opt	wins	192.168.10.10
-    > option	dns	129.219.13.81	# appened to above DNS servers for a total of 3
-    > option	domain	local
+    domain-needed
+    interface=wlan0
+    dhcp-range=192.168.2.1,192.168.2.254,12h
 
-$ sudo /etc/default/udhcpd<br>
-
-    #DHCPD_ENABLED="no"
-
+Verify it with:<br>
+$ cat /etc/dnsmasq.conf | grep -v "#" | sed '/^$/d'<br>
+<br>
 $ sudo service hostapd start<br>
-$ sudo service udhcpd start<br>
+$ sudo service dnsmasq start<br>
 <br>
 $ sudo update-rc.d hostapd enable<br>
-$ sudo update-rc.d udhcpd enable<br>
+$ sudo update-rc.d dnsmasq enable<br>
+<br>
+$ sudo sysctl -w net.ipv4.ip_forward=1
+$ sudo pico /etc/rc.local
+
+    iptables -t nat -A POSTROUTING -j MASQUERADE
+    
